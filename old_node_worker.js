@@ -1,6 +1,5 @@
 import fetch from "node-fetch";
 import * as cheerio from "cheerio";
-import * as fs from "fs";
 import ics from "ics";
 import { DateTime } from "luxon";
 
@@ -8,20 +7,10 @@ const SCHEDULE_URL = "https://austinssc.leaguelab.com/player/schedule";
 
 async function getSchedule() {
   const cookies =
-    "leaguelabsession=671e3dbcf0c7de8f9da94d0f6c0e4cca; leaguelabuser=6f4f2f97711efd4c9cbb70185bb50046_2b56029fcad0f1962533a815d3a8811f_jroyal; leaguelabtoken=a02bc26e497a13fae0c30862f614ff6a";
+    "leaguelabsession=671e3dbcf0c7de8f9da94d0f6c0e4cca; leaguelabuser=6f4f2f97711efd4c9cbb70185bb50046_2b56029fcad0f1962533a815d3a8811f_jroyal; leaguelabtoken=b02bc26e497a13fae0c30862f614ff6a";
   const resp = await fetch(SCHEDULE_URL, { headers: { cookie: cookies } });
   console.log(resp.status);
   return resp.text();
-}
-
-function getHTMLFromFile() {
-  try {
-    const data = fs.readFileSync("schedule.html", "utf8");
-    return data;
-  } catch (err) {
-    console.error(err);
-  }
-  return null;
 }
 
 function processSchedule(rawSchedule) {

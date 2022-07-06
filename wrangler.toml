@@ -1,0 +1,15 @@
+name = "assc-calendar"
+main = "src/index.ts"
+compatibility_date = "2022-07-06"
+route = 'assc-cal.hypersloth.io/*'
+account_id= "1c787a4e7a6972171826b9c0bdd5a4ee"
+
+kv_namespaces = [
+  { binding = "KV", id = "b01fd2ecc4cb44a8926c6c84e68e5f2f", preview_id = "b01fd2ecc4cb44a8926c6c84e68e5f2f" }
+]
+
+[vars]
+ASSC_USERNAME = "jroyal"
+
+# The necessary secrets are:
+# - ASSC_PASSWORD

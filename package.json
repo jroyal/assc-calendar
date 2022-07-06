@@ -11,11 +11,17 @@
   "license": "MIT",
   "dependencies": {
     "cheerio": "^1.0.0-rc.10",
+    "cookie": "^0.5.0",
     "ics": "^2.35.0",
     "luxon": "^2.3.1",
-    "node-fetch": "^3.2.3"
+    "node-fetch": "^3.2.3",
+    "set-cookie-parser": "^2.5.0"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "^3.14.0",
+    "@types/cookie": "^0.5.1",
+    "@types/luxon": "^2.3.2",
+    "@types/set-cookie-parser": "^2.4.2",
     "eslint": "^8.11.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.25.4"
