@@ -36,12 +36,8 @@ async function generateICS(
   env: Env,
   ctx: ExecutionContext
 ): Promise<Response> {
-  console.log("generating ics", new Date());
+  console.log(`generating ics`, new Date());
   try {
-    const url = new URL(request.url);
-    if (url.pathname.includes("favicon")) {
-      return new Response("fav icon");
-    }
     const games = await getSchedule(env);
     const ical = await createICal(games);
     if (!ical) {
@@ -84,4 +80,5 @@ export default {
         return response;
       })
       .catch((err) => {}),
+  scheduled: generateICS,
 };
