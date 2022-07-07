@@ -8,7 +8,7 @@ kv_namespaces = [
   { binding = "KV", id = "b01fd2ecc4cb44a8926c6c84e68e5f2f", preview_id = "b01fd2ecc4cb44a8926c6c84e68e5f2f" }
 ]
 
-# Weekly on Saturdays
+# Daily at 8am
 [triggers]
 crons = ["0 8 * * *"]
 
