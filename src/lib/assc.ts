@@ -74,7 +74,7 @@ export async function getSchedule(env: Env) {
     const team2 = info[3];
     const teams = `${team1} vs ${team2}`;
 
-    const timeAndLocationRegex = /(.* PM) (.*) Full/gm;
+    const timeAndLocationRegex = /(.* PM) (.*?) -|Full/gm;
     matches = [...parts[2].trim().matchAll(timeAndLocationRegex)];
     if (matches.length < 0) {
       throw new Error("failed to find time and location info");

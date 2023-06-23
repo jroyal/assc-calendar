@@ -1,7 +1,7 @@
 name = "assc-calendar"
 main = "src/index.ts"
 compatibility_date = "2022-07-06"
-route = 'assc-cal.hypersloth.io/*'
+route = { pattern = 'assc-cal.hypersloth.io/*', zone_id = "f26899c9ac5bea9fcc538b11963ebe78" }
 account_id= "1c787a4e7a6972171826b9c0bdd5a4ee"
 
 kv_namespaces = [
