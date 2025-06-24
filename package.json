@@ -10,6 +10,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "hono": "^4.8.2",
     "ics": "^2.35.0",
     "itty-router": "^2.6.1",
     "luxon": "^2.3.1",
