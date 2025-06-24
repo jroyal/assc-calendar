@@ -8,7 +8,7 @@ const LOGIN_URL = "https://austinssc.leaguelab.com/login";
 async function getLoginCreds(env: Env) {
   // Get the needed cookies and csrf token from the initial login page read
   let resp = await fetch(LOGIN_URL);
-  let scraper = await await new Scraper({ resp });
+  let scraper = new Scraper({ resp });
   let setCookieHeader = setCookieParser.splitCookiesString(
     resp.headers.get("set-cookie") || ""
   );
@@ -52,7 +52,7 @@ export async function getSchedule(env: Env) {
     cookie: loginCookies,
   };
   const resp = await fetch(SCHEDULE_URL, { headers });
-  let scraper = await await new Scraper({ resp });
+  let scraper = new Scraper({ resp });
   const selector = ".myScheduleDate";
   const rawText = await scraper.querySelector(selector).getText({});
   let games = rawText[selector].map((rawgame: string) => {
@@ -66,7 +66,7 @@ export async function getSchedule(env: Env) {
 
     const teamRegex = /(.*?) (Visitor\s)?vs\. (.*?)(\sHome)?$/gm;
     let matches = [...parts[1].trim().matchAll(teamRegex)];
-    if (matches.length < 0) {
+    if (matches.length === 0) {
       throw new Error("failed to find team info");
     }
     let info = matches[0];
@@ -76,7 +76,7 @@ export async function getSchedule(env: Env) {
 
     const timeAndLocationRegex = /(.* PM) (.*?) -|Full/gm;
     matches = [...parts[2].trim().matchAll(timeAndLocationRegex)];
-    if (matches.length < 0) {
+    if (matches.length === 0) {
       throw new Error("failed to find time and location info");
     }
     info = matches[0];
