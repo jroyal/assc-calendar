@@ -15,3 +15,7 @@ Required environment variables
 
 `/generate` will update the ics file stored in Workers KV
 `/schedule` will return the ics file
+
+## Testing
+
+Run `npm test` to execute the unit tests. Tests are also run automatically on pull requests using GitHub Actions.
