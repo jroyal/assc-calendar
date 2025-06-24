@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.mjs",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest"
   },
   "type": "module",
   "author": "",
@@ -21,6 +21,9 @@
     "@types/set-cookie-parser": "^2.4.2",
     "eslint": "^8.11.0",
     "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-plugin-import": "^2.25.4"
+    "eslint-plugin-import": "^2.25.4",
+    "miniflare": "^4.20250617.3",
+    "vitest": "^3.2.4",
+    "vitest-environment-miniflare": "^2.14.4"
   }
 }
