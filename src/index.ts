@@ -1,4 +1,4 @@
-import { Router } from "itty-router";
+import { Hono } from "hono";
 import { getSchedule } from "./lib/assc";
 import { createICS } from "./lib/ics";
 import { getDateArray } from "./lib/format";
@@ -31,7 +31,7 @@ function generateKey(env: Env) {
   return `ics_${env.ASSC_USERNAME.toLowerCase()}`;
 }
 
-async function generateICS(
+export async function generateICS(
   request: Request,
   env: Env,
   ctx: ExecutionContext
@@ -63,22 +63,19 @@ async function getScheduleICS(
   return new Response("failed to find calendar", { status: 404 });
 }
 
-const router = Router();
-router.get("/schedule", getScheduleICS);
-router.get("/generate", generateICS);
-router.get("*", (request, env, context) => {
-  return new Response("/generate to update feed");
+const app = new Hono<{ Bindings: Env }>();
+
+app.get("/schedule", async (c) => {
+  return getScheduleICS(c.req.raw, c.env, c.executionCtx);
 });
 
-// alternative advanced/manual approach for downstream control
+app.get("/generate", async (c) => {
+  return generateICS(c.req.raw, c.env, c.executionCtx);
+});
+
+app.all("*", (c) => c.text("/generate to update feed"));
+
 export default {
-  fetch: (...args: any[]) =>
-    router
-      // @ts-ignore
-      .handle(...args)
-      .then((response) => {
-        return response;
-      })
-      .catch((err) => {}),
+  fetch: app.fetch,
   scheduled: generateICS,
 };
