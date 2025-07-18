@@ -17,6 +17,7 @@
     "set-cookie-parser": "^2.5.0"
   },
   "devDependencies": {
+    "@cloudflare/puppeteer": "^1.0.2",
     "@cloudflare/workers-types": "^3.14.0",
     "@types/luxon": "^2.3.2",
     "@types/set-cookie-parser": "^2.4.2",
