@@ -4,6 +4,10 @@ compatibility_date = "2022-07-06"
 route = { pattern = 'assc-cal.hypersloth.io/*', zone_id = "f26899c9ac5bea9fcc538b11963ebe78" }
 account_id= "1c787a4e7a6972171826b9c0bdd5a4ee"
 
+compatibility_flags = [ "nodejs_compat" ]
+
+browser = { binding = "MYBROWSER" }
+
 kv_namespaces = [
   { binding = "KV", id = "b01fd2ecc4cb44a8926c6c84e68e5f2f", preview_id = "b01fd2ecc4cb44a8926c6c84e68e5f2f" }
 ]

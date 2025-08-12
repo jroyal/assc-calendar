@@ -2,11 +2,14 @@ import { Hono } from "hono";
 import { getSchedule } from "./lib/assc";
 import { createICS } from "./lib/ics";
 import { getDateArray } from "./lib/format";
+import { BrowserWorker } from "@cloudflare/puppeteer";
+import { fetchUrl, getSchedule as getBrowserSchedule } from "./lib/browser";
 
 export interface Env {
   KV: KVNamespace;
   ASSC_USERNAME: string;
   ASSC_PASSWORD: string;
+  MYBROWSER: BrowserWorker;
 }
 
 async function createICal(games: any) {
@@ -38,7 +41,9 @@ export async function generateICS(
 ): Promise<Response> {
   console.log(`generating ics`, new Date());
   try {
-    const games = await getSchedule(env);
+    // Try browser-based extraction first
+    let games = await getBrowserSchedule(env);
+
     const ical = await createICal(games);
     if (!ical) {
       throw new Error("could not generate an ical feed");
@@ -71,6 +76,27 @@ app.get("/schedule", async (c) => {
 
 app.get("/generate", async (c) => {
   return generateICS(c.req.raw, c.env, c.executionCtx);
+});
+
+app.get("/test", async (c) => {
+  try {
+    return fetchUrl(c.env, "https://austinssc.leaguelab.com/login");
+  } catch (e) {
+    console.error("Error fetching URL:", e);
+    return new Response("Error fetching URL", { status: 500 });
+  }
+});
+
+app.get("/test-browser", async (c) => {
+  try {
+    const games = await getBrowserSchedule(c.env);
+    return new Response(JSON.stringify(games, null, 2), {
+      headers: { "content-type": "application/json" },
+    });
+  } catch (e) {
+    console.error("Error testing browser:", e);
+    return new Response("Error testing browser", { status: 500 });
+  }
 });
 
 app.all("*", (c) => c.text("/generate to update feed"));
