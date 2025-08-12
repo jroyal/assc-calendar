@@ -17,16 +17,37 @@ export function getDateArray(date: string, time: string) {
     const tomorrow = now.plus({ days: 1 });
     date = `${tomorrow.weekdayLong}, ${tomorrow.monthLong} ${tomorrow.day}`;
   }
-  let d = DateTime.fromFormat(`${date} ${time}`, "EEEE, MMMM d h:mm a", {
+  
+  // Try parsing with current year first
+  let d = DateTime.fromFormat(`${date} ${now.year} ${time}`, "EEEE, MMMM d yyyy h:mm a", {
     zone: "America/Chicago",
   });
+  
+  // If that fails, try without year (original format)
+  if (!d.isValid) {
+    d = DateTime.fromFormat(`${date} ${time}`, "EEEE, MMMM d h:mm a", {
+      zone: "America/Chicago",
+    });
+  }
+  
+  // If still invalid, try next year (for dates that might be in the future)
   if (!d.isValid) {
     const nextYear = now.plus({ year: 1 });
     d = DateTime.fromFormat(
       `${date} ${nextYear.year} ${time}`,
-      "EEEE, MMMM d, yyyy h:mm a"
+      "EEEE, MMMM d yyyy h:mm a",
+      { zone: "America/Chicago" }
     );
   }
+  
+  // If still invalid, log the issue
+  if (!d.isValid) {
+    console.log(`Failed to parse date: "${date}" time: "${time}"`);
+    console.log('Luxon parsing error:', d.invalidReason);
+    // Fallback to current time
+    d = now;
+  }
+  
   d = d.toUTC();
   return [d.year, d.month, d.day, d.hour, d.minute];
 }

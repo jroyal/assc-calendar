@@ -3,7 +3,7 @@ import { getSchedule } from "./lib/assc";
 import { createICS } from "./lib/ics";
 import { getDateArray } from "./lib/format";
 import { BrowserWorker } from "@cloudflare/puppeteer";
-import { fetchUrl } from "./lib/browser";
+import { fetchUrl, getSchedule as getBrowserSchedule } from "./lib/browser";
 
 export interface Env {
   KV: KVNamespace;
@@ -41,7 +41,9 @@ export async function generateICS(
 ): Promise<Response> {
   console.log(`generating ics`, new Date());
   try {
-    const games = await getSchedule(env);
+    // Try browser-based extraction first
+    let games = await getBrowserSchedule(env);
+
     const ical = await createICal(games);
     if (!ical) {
       throw new Error("could not generate an ical feed");
@@ -82,6 +84,18 @@ app.get("/test", async (c) => {
   } catch (e) {
     console.error("Error fetching URL:", e);
     return new Response("Error fetching URL", { status: 500 });
+  }
+});
+
+app.get("/test-browser", async (c) => {
+  try {
+    const games = await getBrowserSchedule(c.env);
+    return new Response(JSON.stringify(games, null, 2), {
+      headers: { "content-type": "application/json" },
+    });
+  } catch (e) {
+    console.error("Error testing browser:", e);
+    return new Response("Error testing browser", { status: 500 });
   }
 });
 
